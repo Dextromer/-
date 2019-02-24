@@ -48,8 +48,8 @@ begin
   Menu:=FPhisicsController.getMenu;
 
   CheckEquals(Menu.Items[1],'10');
-  Check(Menu.Items[0]=Menu.Items[3],'Значения не равны');
-  Fail('Ошибка');
+  Check(Menu.Items[0]=Menu.Items[3],'Not Equal');
+  //Fail('Error');
 
 
 end;
