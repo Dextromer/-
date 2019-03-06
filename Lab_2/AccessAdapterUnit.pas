@@ -8,8 +8,11 @@ uses SysUtils, Data.DB, Data.Win.ADODB,
 type
   AccessAdapter = class(TInterfacedObject, Adapters)
   private
+
     caption:string;
     ADOConnection:TADOConnection;
+    function GetAnswerTableName:string;
+    function GetAnswerTable(answer:string):TList<string>;
     function getMenu: TList<string>;
     procedure setTest(caption:string);
     function getQuest:TList<string>;
@@ -27,21 +30,19 @@ var
   ADOQuery:TADOQuery;
   answer:string;
 begin
+  answer:=GetAnswerTableName;
+  result:=GetAnswerTable(answer);
+end;
+
+function AccessAdapter.GetAnswerTable(answer:string):TList<string>;
+var
+  ADOQuery:TADOQuery;
+begin
   result:=TList<string>.create;
   ADOQuery:=TADOQuery.Create(nil);
   with (ADOQuery) do
   begin
     Connection:=ADOConnection;
-    Close;
-    SQL.Clear;
-    SQL.Add('SELECT answer FROM Main WHERE caption="' + Self.caption + '";');
-    Open;
-    Active:=True;
-  end;
-  ADOQuery.First;
-  answer:='Answer1';
-  with (ADOQuery) do
-  begin
     Close;
     SQL.Clear;
     SQL.Add('SELECT caption FROM ' + answer + ';');
@@ -53,6 +54,25 @@ begin
     result.Add(ADOQuery.FieldByName('caption').AsString);
     ADOQuery.Next;
   end;
+  ADOQuery.Free;
+end;
+
+function AccessAdapter.GetAnswerTableName: string;
+var
+  ADOQuery:TADOQuery;
+begin
+  ADOQuery:=TADOQuery.Create(nil);
+  with (ADOQuery) do
+  begin
+    Connection:=ADOConnection;
+    Close;
+    SQL.Clear;
+    SQL.Add('SELECT answer FROM Main WHERE caption="' + Self.caption + '";');
+    Open;
+    Active:=True;
+  end;
+  ADOQuery.First;
+  result:= ADOQuery.FieldByName('answer').AsString;
   ADOQuery.Free;
 end;
 
