@@ -13,6 +13,8 @@ type
     ADOConnection:TADOConnection;
     function GetAnswerTableName:string;
     function GetAnswerTable(answer:string):TList<string>;
+    function GetCorrectTableName:string;
+    function GetCorrectTable(correct:string):TDictionary<integer, integer>;
     function getMenu: TList<string>;
     procedure setTest(caption:string);
     function getQuest:TList<string>;
@@ -78,24 +80,21 @@ end;
 
 function AccessAdapter.getCorrect: TDictionary<integer, integer>;
 var
-  ADOQuery:TADOQuery;
   correct:string;
+begin
+  correct:=GetCorrectTableName;
+  result:=GetCorrectTable(correct);
+end;
+
+function AccessAdapter.GetCorrectTable(correct: string): TDictionary<integer, integer>;
+var
+  ADOQuery:TADOQuery;
 begin
   result:=TDictionary<integer, integer>.create;
   ADOQuery:=TADOQuery.Create(nil);
   with (ADOQuery) do
   begin
     Connection:=ADOConnection;
-    Close;
-    SQL.Clear;
-    SQL.Add('SELECT correct FROM Main WHERE caption="' + Self.caption + '";');
-    Open;
-    Active:=True;
-  end;
-  ADOQuery.First;
-  correct:='Correct1';
-  with (ADOQuery) do
-  begin
     Close;
     SQL.Clear;
     SQL.Add('SELECT quest_id, answer_id FROM ' + correct + ';');
@@ -110,6 +109,24 @@ begin
     ADOQuery.Next;
   end;
   ADOQuery.Free;
+end;
+
+function AccessAdapter.GetCorrectTableName: string;
+var
+  ADOQuery:TADOQuery;
+begin
+  ADOQuery:=TADOQuery.Create(nil);
+  with (ADOQuery) do
+  begin
+    Connection:=ADOConnection;
+    Close;
+    SQL.Clear;
+    SQL.Add('SELECT correct FROM Main WHERE caption="' + Self.caption + '";');
+    Open;
+    Active:=True;
+  end;
+  ADOQuery.First;
+  result:= ADOQuery.FieldByName('correct').AsString;
 end;
 
 function AccessAdapter.getQuest: TList<string>;
