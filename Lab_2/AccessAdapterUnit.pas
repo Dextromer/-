@@ -15,6 +15,8 @@ type
     function GetAnswerTable(answer:string):TList<string>;
     function GetCorrectTableName:string;
     function GetCorrectTable(correct:string):TDictionary<integer, integer>;
+    function GetQuestTableName:string;
+    function GetQuestTable(quest:string):TList<string>;
     function getMenu: TList<string>;
     procedure setTest(caption:string);
     function getQuest:TList<string>;
@@ -134,21 +136,19 @@ var
   ADOQuery:TADOQuery;
   quest:string;
 begin
+  quest:=GetAnswerTableName;
+  result:=GetAnswerTable(quest);
+end;
+
+function AccessAdapter.GetQuestTable(quest: string): TList<string>;
+var
+  ADOQuery:TADOQuery;
+begin
   result:=TList<string>.create;
   ADOQuery:=TADOQuery.Create(nil);
   with (ADOQuery) do
   begin
     Connection:=ADOConnection;
-    Close;
-    SQL.Clear;
-    SQL.Add('SELECT quest FROM Main WHERE caption="' + Self.caption + '";');
-    Open;
-    Active:=True;
-  end;
-  ADOQuery.First;
-  quest:='Quest1';
-  with (ADOQuery) do
-  begin
     Close;
     SQL.Clear;
     SQL.Add('SELECT caption FROM ' + quest + ';');
@@ -161,6 +161,24 @@ begin
     ADOQuery.Next;
   end;
   ADOQuery.Free;
+end;
+
+function AccessAdapter.GetQuestTableName: string;
+var
+  ADOQuery:TADOQuery;
+begin
+  ADOQuery:=TADOQuery.Create(nil);
+  with (ADOQuery) do
+  begin
+    Connection:=ADOConnection;
+    Close;
+    SQL.Clear;
+    SQL.Add('SELECT quest FROM Main WHERE caption="' + Self.caption + '";');
+    Open;
+    Active:=True;
+  end;
+  ADOQuery.First;
+  result:=ADOQuery.FieldByName('quest').AsString;
 end;
 
 procedure AccessAdapter.setTest(caption: string);
