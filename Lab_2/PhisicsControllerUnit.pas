@@ -2,20 +2,24 @@ unit PhisicsControllerUnit;
 
 interface
 
-uses Test1Unit, TestsUnit, MenuUnit, MainUnit, ControllersUnit, System.Generics.Collections;
+uses SysUtils, Dialogs,
+  Test1Unit, TestsUnit, MenuUnit, MainUnit, ControllersUnit,
+  System.Generics.Collections;
 
 type
+  EPhisicsControllerError = class(Exception);
+
   PhisicsController = class(TInterfacedObject, Controllers)
   private
-    Test:Tests;
+    Test: Tests;
     /// <link>aggregation</link>
     Menu1: Main;
   public
-    procedure setTest(caption:string);
-    function getMenu:TList<string>;
-    function getQuest:TList<string>;
-    function getAnswer:TList<string>;
-    function getCorrect:TDictionary<integer, integer>;
+    procedure setTest(caption: string);
+    function getMenu: TList<string>;
+    function getQuest: TList<string>;
+    function getAnswer: TList<string>;
+    function getCorrect: TDictionary<integer, integer>;
 
   end;
 
@@ -23,33 +27,63 @@ implementation
 
 function PhisicsController.getAnswer: TList<string>;
 begin
-  result:=TList<string>.create;
-  result:=Test.getAnswer;
+  try
+    result := TList<string>.create;
+    result := Test.getAnswer;
+    raise EPhisicsControllerError.create('PhisicsController.getAnswer');
+  except
+    on E: EPhisicsControllerError do
+      ShowMessage(E.Message);
+  end;
 end;
 
 function PhisicsController.getCorrect: TDictionary<integer, integer>;
 begin
-  result:=TDictionary<integer, integer>.create;
-  result:=Test.getCorrect;
+  try
+    result := TDictionary<integer, integer>.create;
+    result := Test.getCorrect;
+    raise EPhisicsControllerError.create('PhisicsController.getCorrect');
+  except
+    on E: EPhisicsControllerError do
+      ShowMessage(E.Message);
+  end;
 end;
 
 function PhisicsController.getQuest: TList<string>;
 begin
-  result:=TList<string>.create;
-  result:=Test.getQuest;
+  try
+    result := TList<string>.create;
+    result := Test.getQuest;
+    raise EPhisicsControllerError.create('PhisicsController.getQuest');
+  except
+    on E: EPhisicsControllerError do
+      ShowMessage(E.Message);
+  end;
 end;
 
-function PhisicsController.getMenu:TList<string>;
+function PhisicsController.getMenu: TList<string>;
 begin
-  result:=TList<string>.create;
-  Menu1:=Menu.Create;
-  result:=Menu1.getMenu;
+  try
+    result := TList<string>.create;
+    Menu1 := Menu.create;
+    result := Menu1.getMenu;
+    raise EPhisicsControllerError.create('PhisicsController.getMenu');
+  except
+    on E: EPhisicsControllerError do
+      ShowMessage(E.Message);
+  end;
 end;
 
 procedure PhisicsController.setTest(caption: string);
 begin
-  Test:=Test1.Create;
-  Test.setTest(caption);
+  try
+    Test := Test1.create;
+    Test.setTest(caption);
+  raise EPhisicsControllerError.Create('PhisicsController.setTest');
+  except
+    on E:EPhisicsControllerError do ShowMessage(E.Message);
+  end;
+
 end;
 
 end.
