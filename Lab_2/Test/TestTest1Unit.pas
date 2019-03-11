@@ -49,9 +49,8 @@ var
   caption: string;
   ReturnValue1: TList<string>;
 begin
-  caption:='Test2';
+  caption:='Движение с постоянным ускорением';
   Fest1.setTest(caption);
-  CheckEquals(caption, 'Test2');
   ReturnValue1:=Fest1.getQuest;
   CheckEquals(ReturnValue1.Items[0], 'Дайте определение материальной точки.');
 end;
@@ -60,8 +59,8 @@ procedure TestTest1.TestgetQuest;
 var
   ReturnValue: TList<string>;
 begin
-  ReturnValue := Fest1.getQuest;
-  Fest1.setTest('Test2');
+
+  Fest1.setTest('Движение с постоянным ускорением');
   ReturnValue:=Fest1.getQuest;
   CheckEquals(ReturnValue.Items[2], 'Что такое декартова система координат?');
   CheckNotEquals(ReturnValue.Items[0], '');
@@ -73,8 +72,7 @@ procedure TestTest1.TestgetAnswer;
 var
   ReturnValue: TList<string>;
 begin
-  ReturnValue := Fest1.getAnswer;
-  Fest1.setTest('Test2');
+  Fest1.setTest('Движение с постоянным ускорением');
   ReturnValue:=Fest1.getAnswer;
   CheckEquals(ReturnValue.Items[1],
     'это координата, которую имеет МТ в данный момент времени');
@@ -89,6 +87,7 @@ procedure TestTest1.TestgetCorrect;
 var
   ReturnValue: TDictionary<integer, integer>;
 begin
+  Fest1.setTest('Движение с постоянным ускорением');
   ReturnValue := Fest1.getCorrect;
   CheckEquals(ReturnValue.Items[1], 1);
   CheckEquals(ReturnValue.Items[2], 2);

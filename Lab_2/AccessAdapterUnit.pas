@@ -8,9 +8,9 @@ uses SysUtils, Data.DB, Data.Win.ADODB,
 type
   AccessAdapter = class(TInterfacedObject, Adapters)
   private
-
     caption:string;
     ADOConnection:TADOConnection;
+
     function GetAnswerTableName:string;
     function GetAnswerTable(answer:string):TList<string>;
     function GetCorrectTableName:string;
@@ -28,6 +28,20 @@ type
 implementation
 
 { AccessAdapter }
+
+constructor AccessAdapter.create;
+begin
+  ADOConnection:=TADOConnection.create(nil);
+  with (ADOConnection)do
+  begin
+    Provider:='Microsoft.ACE.OLEDB.12.0';
+    Mode:=cmShareDenyNone;
+    LoginPrompt:=False;
+    ConnectionString:= 'Provider=Microsoft.ACE.OLEDB.12.0;'+
+      'Data Source=Phisics.accdb;'+'Persist Security Info=False';
+    Connected:=true;
+  end;
+end;
 
 function AccessAdapter.getAnswer: TList<string>;
 var
@@ -136,14 +150,15 @@ var
   ADOQuery:TADOQuery;
   quest:string;
 begin
-  quest:=GetAnswerTableName;
-  result:=GetAnswerTable(quest);
+  quest:=GetQuestTableName;
+  result:=GetQuestTable(quest);
 end;
 
 function AccessAdapter.GetQuestTable(quest: string): TList<string>;
 var
   ADOQuery:TADOQuery;
 begin
+
   result:=TList<string>.create;
   ADOQuery:=TADOQuery.Create(nil);
   with (ADOQuery) do
@@ -161,6 +176,7 @@ begin
     ADOQuery.Next;
   end;
   ADOQuery.Free;
+
 end;
 
 function AccessAdapter.GetQuestTableName: string;
@@ -186,24 +202,9 @@ begin
   self.caption:=caption;
 end;
 
-constructor AccessAdapter.create;
-begin
-  ADOConnection:=TADOConnection.create(nil);
-  with (ADOConnection)do
-  begin
-    Provider:='Microsoft.ACE.OLEDB.12.0';
-    Mode:=cmShareDenyNone;
-    LoginPrompt:=False;
-    ConnectionString:= 'Provider=Microsoft.ACE.OLEDB.12.0;'+
-      'Data Source=Phisics.accdb;'+'Persist Security Info=False';
-    Connected:=true;
-  end;
-end;
-
 function AccessAdapter.getMenu: TList<string>;
 var
   ADOQuery:TADOQuery;
-  DataSource:TDataSource;
 begin
   result:=TList<string>.create;
   ADOQuery:=TADOQuery.Create(nil);

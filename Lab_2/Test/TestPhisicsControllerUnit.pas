@@ -49,7 +49,7 @@ procedure TestPhisicsController.TestGetCorrect;
 var
   ReturnValue1: TDictionary<integer, integer>;
 begin
-  FPhisicsController.setTest('Test2');
+  FPhisicsController.setTest('Движение с постоянным ускорением');
   ReturnValue1:=FPhisicsController.getCorrect;
   CheckEquals(ReturnValue1.Items[1], 1);
   CheckEquals(ReturnValue1.Items[2], 2);
@@ -61,12 +61,11 @@ procedure TestPhisicsController.TestGetListAnswer;
 var
   ReturnValue1: TList<string>;
 begin
-  FPhisicsController.setTest('Test2');
+  FPhisicsController.setTest('Движение с постоянным ускорением');
   ReturnValue1:=FPhisicsController.getAnswer;
   CheckEquals(ReturnValue1.Items[0],
     'абстрактный объект (модель), не имеющий размеров, но обладающий другими характеристиками');
   CheckNotEquals(ReturnValue1.Items[0], 'ууууу');
-  //CheckEquals(ReturnValue1.Items[1], '1');
   CheckNotEquals(ReturnValue1.Items[1], 'nnnnnnnn');
   CheckEquals(ReturnValue1.Count, 10);
   CheckNotEquals(ReturnValue1.Count, 3);
@@ -76,7 +75,7 @@ procedure TestPhisicsController.TestGetQuestCaption;
 var
   ReturnValue:TList<string>;
 begin
-  FPhisicsController.setTest('Test2');
+  FPhisicsController.setTest('Движение с постоянным ускорением');
   ReturnValue:=FPhisicsController.getQuest;
   CheckEquals(ReturnValue.Items[0], 'Дайте определение материальной точки.');
   CheckNotEquals(ReturnValue.Items[0], '');
@@ -88,10 +87,8 @@ var
   ReturnValue1: TList<string>;
   ReturnValue2: TList<string>;
 begin
-  FPhisicsController.setTest('Test2');
+  FPhisicsController.setTest('Движение с постоянным ускорением');
   caption:='Test2';
-  FPhisicsController.setTest(caption);
-  CheckEquals(caption, 'Test2');
   ReturnValue1:=FPhisicsController.getQuest;
   CheckEquals(ReturnValue1.Items[0], 'Дайте определение материальной точки.');
   CheckNotEquals(ReturnValue1.Items[0], 'Как определяется положение материальной точки?');
