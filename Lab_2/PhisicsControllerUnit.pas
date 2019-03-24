@@ -4,7 +4,8 @@ interface
 
 uses SysUtils, Dialogs,
   Test1Unit, TestsUnit, MenuUnit, MainUnit, ControllersUnit,
-  System.Generics.Collections;
+  System.Generics.Collections, stdCtrls,
+    CodeSiteLogging;
 
 type
   EPhisicsControllerError = class(Exception);
@@ -15,7 +16,9 @@ type
     /// <link>aggregation</link>
     Menu1: Main;
   public
+    Button1:TButton;
     procedure setTest(caption: string);
+
     function getMenu: TList<string>;
     function getQuest: TList<string>;
     function getAnswer: TList<string>;
@@ -26,7 +29,14 @@ type
 implementation
 
 function PhisicsController.getAnswer: TList<string>;
+var a,b:integer;
 begin
+  a:=5; b:=4;
+  CodeSite.Send('a', Button1);//отправили сообщение с числом
+  CodeSite.Send(csmError, 'Сообщение типа "Ошибка"');
+  CodeSite.Assert(a<b, 'Высота окна больше его ширины');
+
+
   try
     result := TList<string>.create;
     result := Test.getAnswer;
@@ -35,6 +45,7 @@ begin
     on E: EPhisicsControllerError do
       ShowMessage(E.Message);
   end;
+
 end;
 
 function PhisicsController.getCorrect: TDictionary<integer, integer>;
@@ -54,11 +65,13 @@ begin
   try
     result := TList<string>.create;
     result := Test.getQuest;
+
     raise EPhisicsControllerError.create('PhisicsController.getQuest');
   except
     on E: EPhisicsControllerError do
       ShowMessage(E.Message);
   end;
+
 end;
 
 function PhisicsController.getMenu: TList<string>;

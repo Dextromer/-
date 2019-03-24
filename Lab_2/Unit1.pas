@@ -6,7 +6,8 @@ uses
   System.SysUtils, System.Types, System.UITypes, System.Variants, System.Classes,
   System.Generics.Collections, ExtCtrls, StdCtrls,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs,
-  ControllersUnit, PhisicsControllerUnit;
+  ControllersUnit, PhisicsControllerUnit,
+    CodeSiteLogging;
 
 type
   TForm1 = class(TForm)
