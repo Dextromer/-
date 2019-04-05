@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<nodeSet version="1.0">
+  <view uin="1feshzx24al_v">
+    <property name="$defaultDiagram" value="true" />
+    <property name="$metaclass" value="Package Diagram" />
+    <property name="$name" value="default" />
+    <reference referencedUin="delphi:e_class:src:Project1:TestsUnit.@unitclass">
+      <property name="$shortcutReference" value="true" />
+    </reference>
+    <reference referencedUin="delphi:e_class:src:Project1:TestsUnit.Tests">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="10,10,247,126" />
+      <reference referencedUin="delphi:e_method:src:Project1:TestsUnit.Tests.setTest(System.string)" />
+      <reference referencedUin="delphi:e_method:src:Project1:TestsUnit.Tests.getQuest()" />
+      <reference referencedUin="delphi:e_method:src:Project1:TestsUnit.Tests.getAnswer()" />
+      <reference referencedUin="delphi:e_method:src:Project1:TestsUnit.Tests.getCorrect()" />
+    </reference>
+  </view>
+</nodeSet>
